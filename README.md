@@ -24,6 +24,7 @@ A csv to json Convertor and a react-native app to display the json data
   
 ---
 
-This is still a work in progress and many changes are to be made.
-Due to the amount of data given, not all possible conversion problems could be handled.
-The app is just a screen displaying and the available datas' name and about values with an arbitrary picture.
+- This is still a work in progress and many changes are to be made.
+- Due to the amount of data given, not all possible conversion problems could be handled.
+- The app is just a screen displaying and the available datass name and about values with an arbitrary picture.
+- A feaure to show all the details when a tile is touched will be implemented.
