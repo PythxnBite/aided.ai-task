@@ -18,17 +18,13 @@ import {
 	ToastAndroid
 } from "react-native";
 import jsonData from "./formattedJson.json"; // path to json file
+import {
+	createStackNavigator,
+	createAppContainer,
+} from "react-navigation";
 
 type Props = {};
-export default class App extends Component<Props> {
-	constructor() {
-		super();
-		this.state = {
-			dataSource: [],
-			isLoading: true
-		};
-	}
-
+class HomeScreen extends Component<Props> {
 	renderSeperator = () => {
 		return (
 			<View
@@ -37,16 +33,11 @@ export default class App extends Component<Props> {
 		);
 	};
 
-	componentDidMount() {
-		this.setState({
-			dataSource: jsonData
-		});
-	}
 	render() {
 		return (
 			<View style={styles.container}>
 				<FlatList
-					data={this.state.dataSource}
+					data={jsonData}
 					renderItem={({ item }) => (
 						<TouchableOpacity
 							style={{
@@ -55,13 +46,15 @@ export default class App extends Component<Props> {
 								marginBottom: 3
 							}}
 							onPress={() =>
-								ToastAndroid.show(item.NAME, ToastAndroid.SHORT)
+								this.props.navigation.navigate("Profile", {
+									userObject: item
+								})
 							}>
 							<Image
 								style={{ width: 80, height: 80, margin: 5 }}
 								source={{
 									uri:
-										"https://hotemoji.com/images/dl/a/2-person-gesturing-no-emoji-by-twitter.png"
+										"https://cdn0.iconfinder.com/data/icons/user-interface-33/80/App_Interface_new-07-512.png"
 								}}
 							/>
 							<View
@@ -84,7 +77,6 @@ export default class App extends Component<Props> {
 							</View>
 						</TouchableOpacity>
 					)}
-					keyExtractor={(item, index) => index}
 					ItemSeparatorComponent={this.renderSeperator}
 				/>
 			</View>
@@ -92,10 +84,32 @@ export default class App extends Component<Props> {
 	}
 }
 
+class ProfileScreen extends Component {
+	render() {
+		const { navigation } = this.props
+		const userObject = navigation.getParam("userObject")
+		return(
+			<View>
+				<Text>{userObject.NAME}</Text>
+			</View>
+		)
+	}
+}
+
+const AppNavigator = createStackNavigator(
+	{
+		Home: HomeScreen,
+		Profile: ProfileScreen
+	},
+	{
+		initialRouteName: "Home"
+	}
+);
+
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: "#F5FCFF"
+		backgroundColor: "white"
 	},
 	item: {
 		padding: 10,
@@ -103,3 +117,11 @@ const styles = StyleSheet.create({
 		height: 44
 	}
 });
+
+const AppContainer = createAppContainer(AppNavigator);
+
+export default class App extends React.Component {
+	render() {
+		return <AppContainer />;
+	}
+}
