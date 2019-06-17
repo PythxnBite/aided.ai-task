@@ -6,122 +6,81 @@
  * @flow
  */
 
-import React, { Component } from "react";
-import {
-	Platform,
-	StyleSheet,
-	Text,
-	View,
-	FlatList,
-	Image,
-	TouchableOpacity,
-	ToastAndroid
-} from "react-native";
-import jsonData from "./formattedJson.json"; // path to json file
-import {
-	createStackNavigator,
-	createAppContainer,
-} from "react-navigation";
+import React, { Component } from "react"
+import { View } from "react-native"
+import { createStackNavigator, createAppContainer } from "react-navigation"
+import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs"
+import Icon from "react-native-vector-icons/Ionicons"
 
-type Props = {};
-class HomeScreen extends Component<Props> {
-	renderSeperator = () => {
-		return (
-			<View
-				style={{ height: 1, width: "100%", backgroundColor: "black" }}
-			/>
-		);
-	};
+// Material Icons Import TODO: Change theme to material
+import MIcon from "react-native-vector-icons/MaterialIcons"
 
-	render() {
-		return (
-			<View style={styles.container}>
-				<FlatList
-					data={jsonData}
-					renderItem={({ item }) => (
-						<TouchableOpacity
-							style={{
-								flex: 1,
-								flexDirection: "row",
-								marginBottom: 3
-							}}
-							onPress={() =>
-								this.props.navigation.navigate("Profile", {
-									userObject: item
-								})
-							}>
-							<Image
-								style={{ width: 80, height: 80, margin: 5 }}
-								source={{
-									uri:
-										"https://cdn0.iconfinder.com/data/icons/user-interface-33/80/App_Interface_new-07-512.png"
-								}}
-							/>
-							<View
-								style={{
-									flex: 1,
-									justifyContent: "center",
-									marginLeft: 5
-								}}>
-								<Text
-									style={{
-										fontSize: 18,
-										color: "green",
-										marginBottom: 15
-									}}>
-									{item.NAME}
-								</Text>
-								<Text style={{ fontSize: 16, color: "red" }}>
-									{item.details.About}
-								</Text>
-							</View>
-						</TouchableOpacity>
-					)}
-					ItemSeparatorComponent={this.renderSeperator}
-				/>
-			</View>
-		);
-	}
-}
+import HomeScreen from "./HomeScreen"
+import ProvidersListScreen from "./ProvidersListScreen"
+import ProfileScreen from "./ProfileScreen"
 
-class ProfileScreen extends Component {
-	render() {
-		const { navigation } = this.props
-		const userObject = navigation.getParam("userObject")
-		return(
-			<View>
-				<Text>{userObject.NAME}</Text>
-			</View>
-		)
-	}
-}
-
-const AppNavigator = createStackNavigator(
+const ProfileStack = createStackNavigator(
 	{
-		Home: HomeScreen,
+		Providers: ProvidersListScreen,
 		Profile: ProfileScreen
 	},
 	{
-		initialRouteName: "Home"
+		initialRouteName: "Providers",
+		defaultNavigationOptions: {
+			headerTitleStyle: {
+				color: "#fff",
+				fontFamily: "WorkSans-SemiBold"
+			},
+			headerStyle: {
+				backgroundColor: "#486472"
+			}
+		}
 	}
-);
+)
 
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: "white"
+const TabNavigator = createMaterialBottomTabNavigator(
+	{
+		Home: {
+			screen: HomeScreen,
+			navigationOptions: {
+				tabBarLabel: "Home",
+				tabBarIcon: ({ tintColor }) => (
+					<View>
+						<MIcon
+							style={[{ color: tintColor }]}
+							size={25}
+							name={"home"}
+						/>
+					</View>
+				)
+			}
+		},
+		Providers: {
+			screen: ProfileStack,
+			navigationOptions: {
+				tabBarLabel: "Providers",
+				tabBarIcon: ({ tintColor }) => (
+					<View>
+						<MIcon
+							style={[{ color: tintColor }]}
+							size={25}
+							name={"person"}
+						/>
+					</View>
+				)
+				// activeColor: "#fff",
+				// inactiveColor: "#008B87",
+				// barStyle: { backgroundColor: "#00E5C7" }
+			}
+		}
 	},
-	item: {
-		padding: 10,
-		fontSize: 18,
-		height: 44
+	{
+		initialRouteName: "Home",
+		activeColor: "#fff",
+		inactiveColor: "#232F34",
+		barStyle: { backgroundColor: "#344955" },
+		shifting: true
 	}
-});
+)
 
-const AppContainer = createAppContainer(AppNavigator);
-
-export default class App extends React.Component {
-	render() {
-		return <AppContainer />;
-	}
-}
+export default createAppContainer(TabNavigator)
