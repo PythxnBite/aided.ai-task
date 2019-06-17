@@ -72,6 +72,7 @@ class ProvidersListScreen extends Component<Props> {
 							</View>
 						</TouchableOpacity>
 					)}
+					keyExtractor={(item, index) => index.toString()}
 				/>
 			</View>
 		)
