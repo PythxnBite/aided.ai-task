@@ -1,5 +1,5 @@
 # aided.ai-task
-A csv to json Convertor and a react-native app to display the json data
+A csv to json convertor and a react-native app to display the json data
 
 # Instructions:
 ## CSV to JSON
@@ -18,11 +18,17 @@ A csv to json Convertor and a react-native app to display the json data
 
 1. Install nodejs and npm.
 2. Use this command to install react-native-cli<br>
-  `npm install -g react-native-cli`
+  ```bash
+  npm install -g react-native-cli
+  ```
 3. Connect an AVD or an Android mobile and run<br>
-  `react-native run-android`
+  ```bash
+  react-native run-android`
+  ```
   
 ---
+
+## Note
 
 - This is still a work in progress and many changes are to be made.
 - Due to the amount of data given, not all possible conversion problems could be handled.
